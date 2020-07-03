@@ -12,7 +12,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        checkPermissionLocation()
         onClick()
+    }
+
+    private fun checkPermissionLocation() {
+
+    }
+
+    private fun checkPermission(){
+
     }
 
     private fun onClick() {
