@@ -17,4 +17,9 @@ class MainActivity : AppCompatActivity() {
         tvScanning.visibility = View.VISIBLE
         tvCheckInSuccess.visibility = View.GONE
     }
+
+    private fun stopScanLocation(){
+        rippleBackground.stopRippleAnimation()
+        tvScanning.visibility = View.GONE
+    }
 }
