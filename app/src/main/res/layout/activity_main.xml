@@ -27,7 +27,8 @@
             android:textSize="14sp"
             android:textColor="@android:color/white"
             android:layout_below="@id/textViewCheckIn"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
     
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabCheckIn"
@@ -49,6 +50,7 @@
             android:paddingBottom="14dp"
             android:paddingStart="68dp"
             android:paddingEnd="68dp"
+            android:visibility="gone"
             android:layout_marginBottom="60dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
