@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         fabCheckIn.setOnClickListener{
             loadScanLocation()
             Handler().postDelayed({
-                stopScanLocation()
+                getLastLocation()
             }, 4000)
         }
     }
@@ -110,5 +111,26 @@ class MainActivity : AppCompatActivity() {
     private fun stopScanLocation(){
         rippleBackground.stopRippleAnimation()
         tvScanning.visibility = View.GONE
+    }
+
+    private fun getLastLocation(){
+        if (checkPermission()){
+            if (isLocationEnabled()){
+                LocationServices.getFusedLocationProviderClient(this).lastLocation.addOnSuccessListener { location ->
+                    val currentLat = location.latitude
+                    val currentLong = location.longitude
+
+                    tvCheckInSuccess.visibility = View.VISIBLE
+                    tvCheckInSuccess.text = "lat: $currentLat. lon: $currentLong"
+
+                    stopScanLocation()
+                }
+            }else{
+                Toast.makeText(this, "Please turn on your location", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+        }else{
+            requestPermission()
+        }
     }
 }
