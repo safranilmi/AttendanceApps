@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Math.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -130,14 +131,14 @@ class MainActivity : AppCompatActivity() {
                     val currentLat = location.latitude
                     val currentLong = location.longitude
 
+                    val distance = calculateDistance(
+                        currentLat,
+                        currentLong,
+                        getAddresses()[0].latitude,
+                        getAddresses()[0].longitude)
+
                     tvCheckInSuccess.visibility = View.VISIBLE
-                    tvCheckInSuccess.text = "lat: $currentLat. lon: $currentLong"
-
-                    Log.d("coba", "size: ${getAddresses().size}")
-
-                    for (address: Address in getAddresses()){
-                        Log.d("coba", "lat: ${address.latitude}, lon ${address.longitude}")
-                    }
+                    tvCheckInSuccess.text = "distance: $distance"
 
                     stopScanLocation()
                 }
@@ -154,6 +155,15 @@ class MainActivity : AppCompatActivity() {
         val destinationPlace = "Kominfo Kab.OKU"
         val geocode = Geocoder(this, Locale.getDefault())
         return geocode.getFromLocationName(destinationPlace, 100)
+    }
+
+    fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val r = 6372.8 // in kilometers
+        val radiantsLat1 = toRadians(lat1)
+        val radiantsLat2 = toRadians(lat2)
+        val dLat = toRadians(lat2 - lat1)
+        val dLon = toRadians(lon2 - lon1)
+        return 2 * r * asin(sqrt(pow(sin(dLat / 2), 2.0) + pow(sin(dLon / 2), 2.0) * cos(radiantsLat1) * cos(radiantsLat2)))
     }
 }
 
