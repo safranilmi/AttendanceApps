@@ -138,6 +138,8 @@ class MainActivity : AppCompatActivity() {
                         getAddresses()[0].latitude,
                         getAddresses()[0].longitude)
 
+                    Log.d("coba", "current location: $currentLat, $currentLong")
+
                     tvCheckInSuccess.visibility = View.VISIBLE
                     tvCheckInSuccess.text = "distance: $distance"
 
