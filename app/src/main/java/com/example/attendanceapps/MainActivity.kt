@@ -12,11 +12,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_dialog_form.view.*
 import java.lang.Math.*
 import java.util.*
 import kotlin.math.pow
@@ -138,6 +141,12 @@ class MainActivity : AppCompatActivity() {
                         getAddresses()[0].latitude,
                         getAddresses()[0].longitude)
 
+                    if (distance < 10.0){
+                        showDialogForm()
+                    }else{
+                        tvCheckInSuccess.visibility = View.VISIBLE
+                        tvCheckInSuccess.text = "out of range"
+                    }
                     Log.d("coba", "current location: $currentLat, $currentLong")
 
                     tvCheckInSuccess.visibility = View.VISIBLE
@@ -152,6 +161,22 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermission()
         }
+    }
+
+    private fun showDialogForm() {
+        val dialogForm = LayoutInflater.from(this).inflate(R.layout.layout_dialog_form, null)
+        AlertDialog.Builder(this)
+            .setView(dialogForm)
+            .setCancelable(false)
+            .setPositiveButton("Submit") { dialog, _ ->
+                val name = dialogForm.etName.text.toString()
+                Toast.makeText(this, "name: $name", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun getAddresses(): List<Address> {
