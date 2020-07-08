@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.Math.*
 import java.util.*
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
@@ -159,11 +160,12 @@ class MainActivity : AppCompatActivity() {
 
     fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val r = 6372.8 // in kilometers
-        val radiantsLat1 = toRadians(lat1)
-        val radiantsLat2 = toRadians(lat2)
+
+        val radiansLat1 = toRadians(lat1)
+        val radiansLat2 = toRadians(lat2)
         val dLat = toRadians(lat2 - lat1)
         val dLon = toRadians(lon2 - lon1)
-        return 2 * r * asin(sqrt(pow(sin(dLat / 2), 2.0) + pow(sin(dLon / 2), 2.0) * cos(radiantsLat1) * cos(radiantsLat2)))
+        return 2 * r * asin(sqrt(sin(dLat / 2).pow( 2.0) + sin(dLon / 2).pow ( 2.0) * cos(radiansLat1) * cos(radiansLat2)))
     }
 }
 
