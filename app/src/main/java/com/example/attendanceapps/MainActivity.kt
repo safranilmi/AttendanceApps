@@ -18,9 +18,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_dialog_form.view.*
 import java.lang.Math.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.pow
 
@@ -170,13 +172,36 @@ class MainActivity : AppCompatActivity() {
             .setCancelable(false)
             .setPositiveButton("Submit") { dialog, _ ->
                 val name = dialogForm.etName.text.toString()
-                Toast.makeText(this, "name: $name", Toast.LENGTH_SHORT).show()
+                inputDataToFireBase(name) //Input data ke firebase
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun inputDataToFireBase(name: String) {
+        val user = User(name, getCurrentDate())
+
+        val database = FirebaseDatabase.getInstance()
+        val attedancesRef = database.getReference("log_attendance")
+
+        attedancesRef.child(name).setValue(user)
+            .addOnSuccessListener {
+                tvCheckInSuccess.visibility = View.VISIBLE
+                tvCheckInSuccess.text = "Check-In Success"
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
+    private fun getCurrentDate(): String {
+        val currentTime = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("dd-MM-yyy HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(currentTime)
     }
 
     private fun getAddresses(): List<Address> {
