@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                         currentLat,
                         currentLong,
                         getAddresses()[0].latitude,
-                        getAddresses()[0].longitude)
+                        getAddresses()[0].longitude) * 1000
 
                     if (distance < 10.0){
                         showDialogForm()
